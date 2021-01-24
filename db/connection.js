@@ -14,19 +14,5 @@ const connection = mysql.createConnection({
 });
 
 
-connection.connect(err => {
-  if (err) throw err;
-  console.log('connected as id ' + connection.threadId);
-  afterConnection();
-});
-
-afterConnection = () => {
-
- connection.query("SELECT * FROM employee", function (err, res) {
-   if (err) throw err;
-     console.log(res);
-     connection.end();
- });
-}
 
 module.exports = connection;
