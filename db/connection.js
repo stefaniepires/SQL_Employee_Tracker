@@ -13,6 +13,10 @@ const connection = mysql.createConnection({
   database: 'employees'
 });
 
-
+connection.connect((err) => {
+  if(err) {
+    throw err;
+  }
+})
 
 module.exports = connection;

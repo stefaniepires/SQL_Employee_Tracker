@@ -1,7 +1,7 @@
 const connection = require('./db/connection');
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
-
+const promisemysql = require("promise-mysql");
 
 function mainMenu() {
   inquirer
@@ -108,15 +108,130 @@ function viewEmp() {
     mainMenu();
   })
 }
+
+
 //View Employee by Manager
 
 //View Employee by Department
 
 //Add a department
+function addDept() {
+  inquirer
+      .prompt([
+          {
+              name: "deptID",
+              type: "input",
+              message: "What is the ID of the new department?",
+          },
+          {
+              name: "deptName",
+              type: "input",
+              message: "What is the name of the new department?",
+          }
+      ])
+
+      .then(function(response) {
+          connection.query("INSERT INTO departments SET ?", {
+                  id: response.deptID,
+                  department_name: response.deptName,
+              },
+              function(err) {
+                  if (err) throw err;
+                  console.log("Your department was created successfully!");
+                  mainMenu();
+              }
+          );
+      });
+};
 
 //Add a Role
+function addRole() {
+  inquirer
+      .prompt([
+          {
+              name: "roleID",
+              type: "input",
+              message: "What is the ID of the new role?",
+          },
+          {
+              name: "roleTtile",
+              type: "input",
+              message: "What is the title of the new role?",
+          },
+          {
+              name: "roleSalary",
+              type: "input",
+              message: "What is the salary of the new role?",
+          },
+          {
+              name: "roleDepartment",
+              type: "input",
+              message: "What is the department ID of the new role?",
+          }
+      ])
 
+      .then(function(response) {
+          connection.query("INSERT INTO roles SET ?", {
+                  id: response.roleID,
+                  title: response.roleTtile,
+                  salary: response.roleSalary,
+                  department_id: response.roleDepartment,
+              },
+              function(err) {
+                  if (err) throw err;
+                  console.log("Your new role was created successfully!");
+                  mainMenu();
+              }
+          );
+      });
+};
 //Add an employee
+function addEmp() {
+inquirer
+            .prompt([
+                {
+                    name: "employeeID",
+                    type: "input",
+                    message: "What is the ID of the new employee?",
+                },
+                {
+                    name: "empFirstName",
+                    type: "input",
+                    message: "What is the first name of the new employee?",
+                },
+                {
+                    name: "empLastName",
+                    type: "input",
+                    message: "What is the last name of the new employee?",
+                },
+                {
+                    name: "empRole",
+                    type: "input",
+                    message: "What is the role ID for the new employee?",
+                },
+                {
+                    name: "empManager",
+                    type: "input",
+                    message: "What is id of the new employee's manager?",
+                }
+            ])
+
+            .then(function(response) {
+                connection.query("INSERT INTO employee SET ?", {
+                        id: response.employeeID,
+                        first_name: response.empFirstName,
+                        last_name: response.empLastName,
+                        role_id: response.empRole,
+                        manager_id: response.empManager,
+                    },
+                    function(err) {
+                        if (err) throw err;
+                        console.log("Your new employee was created successfully!");
+                        mainMenu();
+                    }
+                );
+            });
+    };
 
 //Update an employee
 
